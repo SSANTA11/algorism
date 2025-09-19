@@ -18,14 +18,18 @@ void merge(int a[], int m, int middle, int n) {
     }
 
     if (i > middle)
-        for (t = j; t <= n; t++, k++) sorted[k] = a[t];
+        for (t = j; t <= n; t++, k++) 
+            sorted[k] = a[t];
     else
-        for (t = i; t <= middle; t++, k++) sorted[k] = a[t];
+        for (t = i; t <= middle; t++, k++) 
+            sorted[k] = a[t];
 
-    for (t = m; t <= n; t++) a[t] = sorted[t];
+    for (t = m; t <= n; t++) 
+        a[t] = sorted[t];
 
     printf("\n 병합 정렬 >> ");
-    for (t = 0; t < size; t++) printf("%4d ", a[t]);
+    for (t = 0; t < size; t++) 
+        printf("%4d ", sorted[t]);
 }
 
 void mergeSort(int a[], int m, int n) {
