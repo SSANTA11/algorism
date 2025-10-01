@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MergeSortPractice", "MergeS
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Week4", "Week4\Week4.vcxproj", "{20B3417C-514D-4C1E-8A11-BC3E94214503}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Week5", "Week5\Week5.vcxproj", "{E09260BF-BAE8-4C22-8A7A-02E0B80BB652}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{20B3417C-514D-4C1E-8A11-BC3E94214503}.Release|x64.Build.0 = Release|x64
 		{20B3417C-514D-4C1E-8A11-BC3E94214503}.Release|x86.ActiveCfg = Release|Win32
 		{20B3417C-514D-4C1E-8A11-BC3E94214503}.Release|x86.Build.0 = Release|Win32
+		{E09260BF-BAE8-4C22-8A7A-02E0B80BB652}.Debug|x64.ActiveCfg = Debug|x64
+		{E09260BF-BAE8-4C22-8A7A-02E0B80BB652}.Debug|x64.Build.0 = Debug|x64
+		{E09260BF-BAE8-4C22-8A7A-02E0B80BB652}.Debug|x86.ActiveCfg = Debug|Win32
+		{E09260BF-BAE8-4C22-8A7A-02E0B80BB652}.Debug|x86.Build.0 = Debug|Win32
+		{E09260BF-BAE8-4C22-8A7A-02E0B80BB652}.Release|x64.ActiveCfg = Release|x64
+		{E09260BF-BAE8-4C22-8A7A-02E0B80BB652}.Release|x64.Build.0 = Release|x64
+		{E09260BF-BAE8-4C22-8A7A-02E0B80BB652}.Release|x86.ActiveCfg = Release|Win32
+		{E09260BF-BAE8-4C22-8A7A-02E0B80BB652}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
