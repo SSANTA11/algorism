@@ -47,7 +47,7 @@ int main() {
 
     printf("정렬된 배열: ");
     for (int i = 0; i < size; i++) {
-        printf("%d ", arr[i]); //call by reference로 인해 수정된 원본이 제시된다!
+        printf("%d ", arr[i]);
     }
     printf("\n");
 

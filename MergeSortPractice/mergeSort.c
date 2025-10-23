@@ -1,5 +1,4 @@
 #include "mergeSort.h"
-int sorted_arr[MAX];
 void merge(int arr[], int left, int middle, int right) {
 	int i, j, k;
 	i = left; // 첫번째 부분 배열의 시작 인덱스
