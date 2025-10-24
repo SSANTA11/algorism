@@ -19,13 +19,11 @@
 
 #include <stdio.h>
 
-#define TRUE  1
-#define FALSE 0
 #define INF  10000           // 무한대 값
 #define MAX_VERTICES 10	// 그래프의 정점 개수
 
 int distance[MAX_VERTICES];	// 시작 정점으로부터의 최단 경로 길이 저장
-int S[MAX_VERTICES];		// 정점의 집합 S
+bool S[MAX_VERTICES];		// 정점의 집합 S
 
 int nextVertex(int n);
 int printStep(int step);
@@ -77,7 +75,7 @@ int printStep(int step) {
 	int i;
 	printf("\n %3d 단계 : S={", step);
 	for (i = 0; i < MAX_VERTICES; i++)
-		if (S[i] == TRUE)
+		if (S[i] == true)
 			printf("%3c", i + 65);
 
 	if (step < 1) 
@@ -101,17 +99,17 @@ void Dijkstra_shortestPath(int start, int n) {
 
 	for (i = 0; i < n; i++) {	// 초기화
 		distance[i] = weight[start][i];
-		S[i] = FALSE;
+		S[i] = false;
 	}
 
-	S[start] = TRUE;			// 시작 정점을 집합 S에 추가
+	S[start] = true;			// 시작 정점을 집합 S에 추가
 	distance[start] = 0;		// 시작 정점의 최단경로를 0으로 설정
 
 	step = printStep(0);		// 0단계 상태를 출력
 
 	for (i = 0; i < n - 1; i++) {
 		u = nextVertex(n);		// 최단 경로를 만드는 다음 정점 u 찾기
-		S[u] = TRUE;			// 정점 u를 집합 S에 추가
+		S[u] = true;			// 정점 u를 집합 S에 추가
 		for (w = 0; w < n; w++)
 			if (!S[w])			// 집합 S에 포함되지 않은 정점 중에서
 //---------------------------------------------------------------------##시험 출제 포인트###--------------------------------------------------------------------------------
