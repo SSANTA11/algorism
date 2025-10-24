@@ -22,18 +22,18 @@
 #define INF  10000           // 무한대 값
 #define MAX_VERTICES 10	// 그래프의 정점 개수
 
-int distance[MAX_VERTICES];	// 시작 정점으로부터의 최단 경로 길이 저장
-bool S[MAX_VERTICES];		// 정점의 집합 S
+int distance[MAX_VERTICES];	//  최단 경로 길이 저장
+bool S[MAX_VERTICES];		// 방문 여부 기록 배열(방문 true, 미방문 false)
 
-int nextVertex(int n);
+int getSmallIndex(int n);
 int printStep(int step);
 void Dijkstra_shortestPath(int start, int n);
 
-// 최소 거리를 갖는 다음 정점을 찾는 연산
-int nextVertex(int n) {
+// 가장 최소 거리를 가지는 정점을 반환합니다.
+int getSmallIndex(int n) {
 	int i, min, minPos;
 	min = INF;
-	minPos = -1;
+	minPos = -1;// minposition
 	for (i = 0; i < n; i++)
 		if ((distance[i] < min) && !S[i]) {
 			min = distance[i];
@@ -44,8 +44,7 @@ int nextVertex(int n) {
 
 // 최단 경로 구하는 과정을 출력하는 연산
 // 서울A 원주B 강릉C 천안D 논산E 대전F 대구G 포항H 광주 부산J 
-#define MAX_VERTICES 10
-#define INF 10000 
+
 
 int weight[MAX_VERTICES][MAX_VERTICES] = {
 	//   A(서울) B(원주) C(강릉) D(천안) E(논산) F(대전) G(대구) H(포항) I(광주) J(부산)
@@ -71,6 +70,8 @@ int weight[MAX_VERTICES][MAX_VERTICES] = {
 		// 9. 부산 (J) - 이미지 기반 (대구, 포항, 광주와 연결)
 		{ INF,  INF,   INF,   INF,   INF,   INF,   9,     5,     15,    0   }
 };
+
+
 int printStep(int step) {
 	int i;
 	printf("\n %3d 단계 : S={", step);
@@ -93,7 +94,8 @@ int printStep(int step) {
 	printf("%4c", ']');
 	return ++step;
 }
-// [알고리즘 8-3] 구현
+// [알고리즘 8-3] 구현 
+// 다익스트라를 수행하는 함수입니다.
 void Dijkstra_shortestPath(int start, int n) {
 	int i, u, w, step = 0;
 
@@ -108,7 +110,7 @@ void Dijkstra_shortestPath(int start, int n) {
 	step = printStep(0);		// 0단계 상태를 출력
 
 	for (i = 0; i < n - 1; i++) {
-		u = nextVertex(n);		// 최단 경로를 만드는 다음 정점 u 찾기
+		u = getSmallIndex(n);		// 최단 경로를 만드는 다음 정점 u 찾기
 		S[u] = true;			// 정점 u를 집합 S에 추가
 		for (w = 0; w < n; w++)
 			if (!S[w])			// 집합 S에 포함되지 않은 정점 중에서
@@ -130,7 +132,7 @@ int main(void) {
 	int i, j;
 	extern int weight[MAX_VERTICES][MAX_VERTICES];
 
-	printf("\n ********** 가중치 인접 행렬 **********\n\n");
+	printf("\n ********** 가중치 인접 행렬 **********\nA(서울) B(원주) C(강릉) D(천안) E(논산) F(대전) G(대구) H(포항) I(광주) J(부산)\n");
 	for (i = 0; i < MAX_VERTICES; i++) {
 		for (j = 0; j < MAX_VERTICES; j++) {
 			if (weight[i][j] == INF)
