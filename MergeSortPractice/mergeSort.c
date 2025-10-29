@@ -22,9 +22,8 @@ void merge(int arr[], int left, int middle, int right) {
 	for (int i = left; i <= right; i++) {
 		arr[i] = sorted_arr[i];
 	}
-	for (int i = 0; i < MAX; i++) {
+	for (int i = 0; i < MAX; i++)
 		printf("%4d ",sorted_arr[i]);
-	}
 	printf("\n");
 }
 
