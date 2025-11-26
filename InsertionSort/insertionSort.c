@@ -1,9 +1,28 @@
 #include <stdio.h>
 
-void insertionSort(int a[], int size) {
-	int i, j, t, temp;
+//void insertionSort(int a[], int size) {
+//	int i, j, t, temp;
+//
+//	for (i = 1; i < size; i++) {
+//		temp = a[i];
+//		j = i;
+//		while ((j > 0) && (a[j - 1] > temp)) {
+//			a[j] = a[j - 1];
+//			j = j - 1;
+//		}
+//		a[j] = temp;
+//		printf("\n %d단계 : ", i);
+//		for (t = 0; t < size; t++) printf("%3d ", a[t]);
+//	}
+//}
+int main() {
+	int arr[4] = { 50,40,90,10 };
 
-	for (i = 1; i < size; i++) {
+	insertionSort(arr, 4);
+}
+void insertionSort(int a[], int size) {
+	int temp, j;
+	for (int i = 1; i < size; i++) {
 		temp = a[i];
 		j = i;
 		while ((j > 0) && (a[j - 1] > temp)) {
@@ -11,12 +30,6 @@ void insertionSort(int a[], int size) {
 			j = j - 1;
 		}
 		a[j] = temp;
-		printf("\n %d단계 : ", i);
-		for (t = 0; t < size; t++) printf("%3d ", a[t]);
-	}
-}
-int main() {
-	int arr[4] = { 50,40,90,10 };
 
-	insertionSort(arr, 4);
+	}
 }
