@@ -2,6 +2,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+// 모든 코드에 앞서 굳이 백트래킹은 트리의 개념을 따라야 하는가에 대한 의문이 들었다. 
+// 트리의 구조로 이해가 쉬운거지 반드시 전공서적처럼 트리로만 이해할 필요는 없다고 판단하여
+// 전공 서적과는 약간 다르게 방문여부는 제시된 배열을 기준으로 값을 변경하여 판단하기로 계획함.
+
 #define SIZE_HEIGHT 7
 #define SIZE_WIDTH 9
 
@@ -9,9 +13,11 @@ typedef struct Location {
 	int x;
 	int y;
 } L;
-
+// 구조체로 좌표를 저장하도록 만듬. 이는 현재 위치와 현재위치를 기준으로 동서남북으로 가능한 위치를 다룰 때 사용.
+//계속 struct 쓰기가 버거워 typedef로 작성
 int directionX[] = { 1, -1, 0, 0 };
 int directionY[] = { 0, 0, 1, -1 };
+//동서남북을 나타내는 배열 반복문에 넣어 표현할 예정
 
 char mazeArr[SIZE_HEIGHT][SIZE_WIDTH] = {
 	{ '=','=','=','=','=','=','=','=','='},
@@ -22,47 +28,70 @@ char mazeArr[SIZE_HEIGHT][SIZE_WIDTH] = {
 	{ '=',' ',' ',' ',' ',' ','=',' ','e'},
 	{ '=','=','=','=','=','=','=','=','='}
 };
+//7 x 9 행렬. 편의를 위해 전역으로 선언함
 
 void showProgress(L position) {
-	mazeArr[position.y][position.x] = 'x';
+	mazeArr[position.y][position.x] = 'x'; // 방문했을 경우 매개변수 자리에 인수로써 들어온 구조체 좌표값으로 
+	// 전역으로 선언된 배열을 편집하여, 방문지를 x 표시할거임. 
+//단 방문 이후에 옳지 않은 길임을 판단했을 경우는 다시 회수할 예정...
 
 	printf("\n현재 위치: (%d, %d)\n", position.x, position.y);
-
+	// 현재 위치는 배열위에 표시하여 배열의 진행도를 시각적으로 들어낼거임.
 	for (int y = 0; y < SIZE_HEIGHT; y++) {
 		for (int x = 0; x < SIZE_WIDTH; x++) {
+			//매 이동마다 배열 전체를 들어내기 위한 반복문
 			printf("%c ", mazeArr[y][x]);
 		}
 		printf("\n");
 	}
 	printf("----------------------------------\n");
+	// 각 배열의 구분을 위해 선언한 절취선(?)
 }
+//전공 서적에는 없던 시각적 표현 메서드. 이를 통해 미로찾기의 세부 움직임을 표현할 예정
 
-bool MazeSearch(L current) {
+bool MazeSearch(L current) {//여기서 반환값을 bool로 설정함은 이후에 등장한다.
+	//첫 인수는 출발지 이며
 	mazeArr[current.y][current.x] = 'x';
 	showProgress(current);
-
+	// 출발지부터 일단 방문여부를 표시함.
 	for (int i = 0; i < 4; i++) {
 		L next;
+		// 다음으로 갈 곳을 앞서 만든 구조체로써 좌표를 표시하는 next. 이는 재귀로써 매번 리셋 되어야함으로 매번 새롭게 초기화 시킨다.
 		next.x = current.x + directionX[i];
 		next.y = current.y + directionY[i];
+		//앞서 언급한 방향 선택 반복문 입력받은 좌표를 기준으로 동서남북을 위 반복문에 따라 순차적으로 검사한다.
 
 		if (next.x >= 0 && next.x < SIZE_WIDTH && next.y >= 0 && next.y < SIZE_HEIGHT) {
+			// 예를 들어 특정 방향 동서남북의 동부터 시작한다고 가정할 때 위 조건문에서  1차적으로 검사한다. 
+			// 이때 조건은 배열의 범위를 초과하진 않았습니까? 이다.
 			if (mazeArr[next.y][next.x] == 'e') {
+				//위 조건을 통과했다면 이어서 출구입니까 를 물어본다.
 				showProgress(next);
 				printf(" 목적지 도착\n");
+				//그렇다면 목적지 도착이라 띄우고 반환값을 반환하는데 여기가 포인트이다.
+				//재귀를 하면 만약 출구를 찾은 뒤 반환한다해도 앞서 실행중인 이전 재귀함수때문에 회귀하듯이 마무리하는데
+				//이러면 내가 의도한 시각적인 표현에 다소 어색함이 생긴다. 이때 반환을 bool하여 재귀함수 자체를 일종의 플래그(?) 역할로 만들어주면
+				//이후에 별다른 동작없이 반환, ... 반환, .... 반환 한다
 				return true;
 			}
-			if (mazeArr[next.y][next.x] == ' ') {
-				if (MazeSearch(next)) {
-					return true;
+			if (mazeArr[next.y][next.x] == ' ') { // 이게 위에서 곧바로 탐색없이 종료하는 분기. 
+				// 아무때나 이하 코드블록을 실행하면 안되고 반드시 빈공간을 찾아가던 상황에서만 동작한다. 
+				// 당연한 말이지만 위 조건문 없이는 무한루프에 빠진다.(벽임에도 일단 시도와 빈공간이라 일단시도가 모두 계속반복) 
+				// 만약 아무때나 그러면 별다른 이유도없이 이하 코드를 한번씩 검사할거다.
+				if (MazeSearch(next)) { //여기서 재귀함수로 사용되던 MazeSearch는 목적지를 찾은 이후라면 별다른 동작을 하지 않는다.
+					return true; // 결론적으로 빈공간이라면 이 조건문에 재귀함수에 일단 진입한다. 단, 이 표현 방식은 직접 한건아니다. 
+					//백트래킹 관련 사설 학습 중 찾은 표현식...(-> 조건문에 재귀를 넣는 방식)
 				}
 			}
 		}
 	}
 
-	mazeArr[current.y][current.x] = ' ';
-	printf("\n되돌아가기: (%d, %d)\n", current.x, current.y);
-	return false;
+	mazeArr[current.y][current.x] = ' ';// 위에선 각 동서남북 중 동 방향이 계속 비어서 갔음을 가정했는데 현재 라인은 막힌경우 진입하게되는 루프이다.
+	//특정 위치에서 동서남북 중 하나의 공간이라도 빈 공간이라면 여기로 넘어올 이유가 없지만 만약 목적지를 찾지 못한 상황에서 사방면에 갈 곳이 없다면
+	//위 명령을 실행한다. (다시 돌아갈게요) 즉 back한다.
+	printf("\nback: (%d, %d)\n", current.x, current.y);// back함을 표현하고서
+	return false;// 위와는 다르게 false를 뱉는다. 그러면 앞서본 현재 위치 전의 위 재귀 조건문은 진입 불가. 결국 다른 선택지가 있는 위치까지 계속 후퇴한다.
+	//앞서 언급했던 회수(백트래킹) 기능. 이미 방문한 곳이라도 막다른 곳이면 back함을 표현
 }
 
 int main() {
